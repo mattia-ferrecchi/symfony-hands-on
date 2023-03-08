@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div>
+{% if limit > 0 %}
+    {% for key, elemento in messages|slice(0,limit) %}
+        <div>
+            <a href="{{ path('app_show_one', { id: key }) }}">{{elemento.message}}</a>
+        </div>
+        {{include('hello/_message.html.twig')}}    
+    {% endfor %}
+{% else %}
+    Hai inserito lunghezza 0, <b>COGLIONE!</b>
+{% endif %}
+</div>
+{% endblock %}
+{% block title %}TITOLONE!{% endblock %}
