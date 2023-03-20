@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Entity\MicroPost;
 use App\Repository\MicroPostRepository;
 use DateTime;
+use PhpParser\Node\Stmt\Label;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -24,6 +27,28 @@ class MicroPostController extends AbstractController
     {
         return $this->render('micro_post/show.html.twig', [
             'post' => $post,
+        ]);
+    }
+
+    #[Route('/micro-post/add', name: 'app_micro_post_add', priority:2)]
+    public function add(Request $request, MicroPostRepository $posts): Response
+    {
+        $micropost = new MicroPost();
+        $form = $this->createFormBuilder($micropost)
+            ->add ('title')
+            ->add ('text')
+            ->add ('submit', SubmitType::class, ['label'=>'save'])
+            ->getForm();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $post = $form->getData();
+            $post->setCreated(new DateTime());
+            $posts->save($post, true);
+
+        };
+        return $this->renderform('micro_post/add.html.twig',[
+            'form'=>$form
         ]);
     }
 }
