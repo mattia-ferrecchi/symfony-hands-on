@@ -6,14 +6,16 @@
     <div>
         {% if posts|length > 0 %}
             {% for post in posts %}
-                <div>
-                    <a href="{{ path('app_micro_post_show', { post: post.id }) }}">
+                <div style='border:1px solid black; padding:5px; margin:2px'>
+                    <a href="{{ path('app_micro_post_show', { id: post.id }) }}">
                         {{post.title}}
                     </a>
+                    <p>{{post.text}}</p>
                 </div>   
             {% endfor %}
         {% else %}
             There's nothing here
         {% endif %}
     </div>
+    <a href="{{path('app_micro_post_add')}}">New Post</a>  
 {% endblock %}

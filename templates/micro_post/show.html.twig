@@ -11,5 +11,7 @@
         {% else %}
             {{post.created|date('d/m/Y')}}
         {% endif %}
-    </div>    
+    </div>
+    <a href="{{path('app_micro_post_edit', {id:post.id})}}">Edit</a>
+    <a href="{{path('app_micro_post')}}">Back</a>    
 {% endblock %}
