@@ -75,12 +75,20 @@ class MicroPostController extends AbstractController
             'post'=>$post
         ]);
     }
+
+    /**
+     * this funcion is useful to delete a post
+     */
     #[Route('/micro-post/{id}/delete', name: 'app_micro_post_delete')]
     public function delete(MicroPost $post, MicroPostRepository $microPostRepository): Response
     {
+        //get post title
         $title=$post->getTitle();
+        //delete post using related repository, pass true as second argument to flush delete to database
         $microPostRepository->remove($post, true);
+        //pass a message to the flash store to say post has been deleted
         $this->addFlash('success', "you micro post $title has been deleted");
+        //after deleting the post return to the posts list
         return $this->redirectToRoute('app_micro_post');
     }
 }   
