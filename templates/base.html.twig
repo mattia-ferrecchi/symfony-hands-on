@@ -38,9 +38,10 @@
                     {{message}}
                 </div>
             {% endfor %}
+            {% block body %}{% endblock %}
         </div>
 
-        {% block body %}{% endblock %}
+        
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}

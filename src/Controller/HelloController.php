@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Entity\UserProfile;
+use App\Repository\UserProfileRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,17 +18,27 @@ class HelloController extends AbstractController
         ['message' => 'Bye!', 'created' => '2021/05/12'],
     ];
 
-    #[Route('/{limit<\d+>?3}', name:'app_index')]
-    public function index (int $limit)
+    #[Route('/', name:'app_index')]
+    public function index (UserProfileRepository $userProfileRepository)
     {
+        /* $user= new User();
+        $user->setEmail('emil@email.com');
+        $user->setPassword('12345678');
+
+
+        $profile= new UserProfile();
+        $profile->setUser($user);
+        $userProfileRepository->save($profile, true); */
+        $profile=$userProfileRepository->find(2);
+        $userProfileRepository->remove($profile, true);
+
         return $this->render(
             'hello/index.html.twig',
            [
              'messages' => $this->messages,
-             'limit' => $limit
+             'limit' => 3
            ]
         );
-        // return new Response(implode(',', array_slice ($this->messages, 0, $limit)));
     }
 
     #[Route('/messages/{id<\d+>}', name:'app_show_one')]
