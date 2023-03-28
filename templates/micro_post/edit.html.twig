@@ -2,10 +2,13 @@
 
 {% block title %}Editing...{% endblock %}
 
+{% block bread %}
+    → Edit Post
+{% endblock %}
+
 {% block body %}
     {{include('micro_post/_form.html.twig')}}
     <a href="" onclick="del()">Delete!</a>
-    <a href="{{path('app_micro_post')}}">Back</a>
     <script>
         /*this function is useful to delete a post calling app_micro_post_delete route of MicroPostController*/
         function del(){
@@ -14,6 +17,7 @@
             ){
                 window.open('{{path('app_micro_post_delete', {id:post.id})}}')
                 window.close('{{path('app_micro_post_delete', {id:post.id})}}')
+                /*window.location.href = '{{path('app_micro_post_delete', {id:post.id})}}'*/
             }
         }
     </script>   

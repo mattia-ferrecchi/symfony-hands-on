@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="dark">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -8,15 +8,42 @@
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
         {% endblock %}
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config={
+                darkMode: 'class'
+            }
+        </script>
     </head>
-    <body>
-        {% for message in app.flashes('success') %}
-            <div style="color:green">{{message}}</div>
-        {% endfor %}
+    <body class="bg-gray-100 text-gray-800 m-10 dark:bg-gray-800 dark:text-white">
+        <div class="w-full md:w-2/3 mx-auto mb-4 flex justify-between items-center">
+            <div class="text-4xl">
+                <a href="{{ path('app_micro_post') }}">Home</a>
+                {% block bread %}
+
+                {% endblock %}
+            </div>
+            <div class="text-right">
+                <div class="text-sm text-gray-400 dark:text-gray-500">
+                    Login & Registration goes here
+                </div>
+                <div class="text-xl text-blue-800 dark:text-blue-500">
+                    <a href="{{path('app_micro_post_add')}}">Add New Post</a>
+                </div>
+            </div>
+        </div>
+        <div class="w-full md:w-2/3 mx-auto">
+            {% for message in app.flashes('success') %}
+                <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-600 dark:text-white mb-4">
+                    {{message}}
+                </div>
+            {% endfor %}
+        </div>
 
         {% block body %}{% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
+        
     </body>
 </html>

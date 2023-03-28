@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\MicroPostRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as assert;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: MicroPostRepository::class)]
 class MicroPost
@@ -15,9 +17,11 @@ class MicroPost
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[assert\NotBlank()]
     private ?string $title = null;
 
     #[ORM\Column(length: 500)]
+    #[assert\NotBlank()]
     private ?string $text = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
