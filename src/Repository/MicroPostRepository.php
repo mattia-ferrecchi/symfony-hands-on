@@ -42,6 +42,7 @@ class MicroPostRepository extends ServiceEntityRepository
     public function findAllWithComments(): array
     {
         return $this->createQueryBuilder('p')
+            ->select('p')
             ->addSelect('c')
             ->leftJoin('p.comments','c')
             ->orderBy('p.created','DESC')

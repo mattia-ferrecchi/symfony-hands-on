@@ -12,5 +12,35 @@
             There's nothing here
         {% endif %}
     </div>
+    <script>
+        /*this function is useful to delete a post calling app_micro_post_delete route of MicroPostController*/
+        function del(url,post_id){
+            if(
+                window.confirm('Do you really want to delete this post?')
+            ){
+                loadXMLDoc(url,post_id);
+            }
+        }
+        function loadXMLDoc(url,post_id) {
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
+                        document.getElementById('post-'+post_id).remove();
+                    }
+                    else if (xmlhttp.status == 400) {
+                        alert('There was an error 400');
+                    }
+                    else {
+                        alert('something else other than 200 was returned');
+                    }
+                }
+            };
+
+            xmlhttp.open("DELETE", url, true);
+            xmlhttp.send();
+        }
+    </script>   
          
 {% endblock %}

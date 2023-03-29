@@ -116,7 +116,7 @@ class MicroPostController extends AbstractController
         //pass a message to the flash store to say post has been deleted
         $this->addFlash('success', "you micro post $title has been deleted");
         //after deleting the post return to the posts list
-        return $this->redirectToRoute('app_micro_post');
+        return $this->json(['result'=>'done']);
     }
 
     /**
@@ -126,7 +126,8 @@ class MicroPostController extends AbstractController
     public function addComment(MicroPost $post, Request $request, CommentRepository $commentRepository): Response
     {
         //create a form for the new comment
-        $form = $this->createForm(CommentType::class, new Comment());
+        $comment= new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
 
         //check if the comment is submitted and valid
