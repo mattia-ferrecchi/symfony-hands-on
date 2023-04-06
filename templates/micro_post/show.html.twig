@@ -14,8 +14,8 @@
                 <div class="flex items-center">
                     <div class="inline-block bg gray-200 dark:bg-gray-700 rounded-full text-3xl w-8 h-8 ring-2 ring-white dark:ring-gray-600 mr-2"></div>
                     <div>
-                        <div class="font-medium text-gray-800 dark:text-gray-300">Author</div>
-                        <div class="font-light text-gray-500 dark:text-gray-500">When</div>
+                        <div class="font-medium text-gray-800 dark:text-gray-300">{{ comment.author.email }}</div>
+                        <div class="font-light text-gray-500 dark:text-gray-500">{{ comment.created | date("M j, Y")}}</div>
                     </div>
                 </div>
                 <div class="flex">
@@ -25,4 +25,34 @@
             </div>
         {% endfor %}
     </div>
+    <script>
+        /*this function is useful to delete a post calling app_micro_post_delete route of MicroPostController*/
+        function del(url,post_id){
+            if(
+                window.confirm('Do you really want to delete this post?')
+            ){
+                loadXMLDoc(url,post_id);
+            }
+        }
+        function loadXMLDoc(url,post_id) {
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
+                    if (xmlhttp.status == 200) {
+                        document.getElementById('post-'+post_id).remove();
+                    }
+                    else if (xmlhttp.status == 400) {
+                        alert('There was an error 400');
+                    }
+                    else {
+                        alert('something else other than 200 was returned');
+                    }
+                }
+            };
+
+            xmlhttp.open("DELETE", url, true);
+            xmlhttp.send();
+        }
+    </script>
 {% endblock %}

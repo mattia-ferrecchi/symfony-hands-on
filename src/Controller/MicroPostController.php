@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Comment;
 use DateTime;
+use App\Entity\Comment;
 use App\Entity\MicroPost;
 use App\Form\CommentType;
 use PhpParser\Node\Stmt\Label;
@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MicroPostController extends AbstractController
@@ -36,6 +37,7 @@ class MicroPostController extends AbstractController
      * this funcion is useful to show a single post
      */
     #[Route('/micro-post/{id}', name: 'app_micro_post_show')]
+    #[IsGranted(MicroPost::VIEW, 'post')]
     public function showOne(MicroPost $post): Response
     {
         return $this->render('micro_post/show.html.twig', [
@@ -47,7 +49,11 @@ class MicroPostController extends AbstractController
      * this funcion is useful to add a post
      */
     #[Route('/micro-post/add', name: 'app_micro_post_add', priority:2)]
-    public function add(Request $request, MicroPostRepository $microPostRepository): Response
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function add(
+        Request $request,
+        MicroPostRepository $microPostRepository
+    ): Response
     {
         //create new micropost
         $micropost = new MicroPost();
@@ -62,8 +68,8 @@ class MicroPostController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             //get the post from form
             $post = $form->getData();
-            //set the date
-            $post->setCreated(new DateTime());
+            //set the author getting the user
+            $post->setAuthor($this->getUser());
             //save post using related repository, pass true as second argument to flush add to database
             $microPostRepository->save($post, true);
             //pass a message to the flash store to say post has been added
@@ -77,6 +83,7 @@ class MicroPostController extends AbstractController
     }
 
     #[Route('/micro-post/{id}/edit', name: 'app_micro_post_edit')]
+    #[IsGranted(MicroPost::EDIT, 'post')]
     public function edit(MicroPost $post, Request $request, MicroPostRepository $microPostRepository): Response
     {
         //create a form with title and text
@@ -107,6 +114,7 @@ class MicroPostController extends AbstractController
      * this funcion is useful to delete a post
      */
     #[Route('/micro-post/{id}/delete', name: 'app_micro_post_delete')]
+    #[IsGranted('ROLE_EDITOR')]
     public function delete(MicroPost $post, MicroPostRepository $microPostRepository): Response
     {
         //get post title
@@ -123,6 +131,7 @@ class MicroPostController extends AbstractController
      * this funcion is useful to add a comment to post
      */
     #[Route('/micro-post/{id}/comment', name: 'app_micro_post_comment')]
+    #[IsGranted('ROLE_COMMENTER')]
     public function addComment(MicroPost $post, Request $request, CommentRepository $commentRepository): Response
     {
         //create a form for the new comment
@@ -136,6 +145,8 @@ class MicroPostController extends AbstractController
             $comment = $form->getData();
             //associate the comment to the post
             $comment->setPost($post);
+            //set author getting the user
+            $comment->setAuthor($this->getUser());
             //save comment using related repository, pass true as second argument to flush add to database
             $commentRepository->save($comment, true);
             //pass a message to the flash store to say comment has been added
