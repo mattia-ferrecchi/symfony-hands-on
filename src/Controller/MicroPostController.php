@@ -45,11 +45,11 @@ class MicroPostController extends AbstractController
         ]);
     }
 
-        /**
-     * this funcion is useful to add a post
-     */
+    /**
+    * this funcion is useful to add a post
+    */
     #[Route('/micro-post/add', name: 'app_micro_post_add', priority:2)]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_WRITER')]
     public function add(
         Request $request,
         MicroPostRepository $microPostRepository
@@ -81,7 +81,9 @@ class MicroPostController extends AbstractController
             'form'=>$form
         ]);
     }
-
+    /**
+     * this funcion is useful to edit a post
+     */
     #[Route('/micro-post/{id}/edit', name: 'app_micro_post_edit')]
     #[IsGranted(MicroPost::EDIT, 'post')]
     public function edit(MicroPost $post, Request $request, MicroPostRepository $microPostRepository): Response
