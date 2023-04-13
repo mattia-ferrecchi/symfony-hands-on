@@ -3,15 +3,7 @@
 {% block title %}All Posts!{% endblock %}
 
 {% block body %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-10">
-        {% if posts|length > 0 %}
-            {% for post in posts %}
-                {{include('micro_post/_post.html.twig', {post:post})}}  
-            {% endfor %}
-        {% else %}
-            There's nothing here
-        {% endif %}
-    </div>
+    {{include ('micro_post/_post_list.html.twig')}}
     <script>
         /*this function is useful to delete a post calling app_micro_post_delete route of MicroPostController*/
         function del(url,post_id){
