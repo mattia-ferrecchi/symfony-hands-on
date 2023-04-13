@@ -33,6 +33,28 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+    #[Route('/micro-post/top-liked', name: 'app_micro_post_top_liked')]
+    public function topLiked(MicroPostRepository $microPostRepository): Response
+    {
+        //get an array with all the posts
+        $posts = $microPostRepository->findAllWithComments();
+        //render the template
+        return $this->render('micro_post/top_liked.html.twig', [
+            'posts' => $posts
+        ]);
+    }
+
+    #[Route('/micro-post/follows', name: 'app_micro_post_follows')]
+    public function follows(MicroPostRepository $microPostRepository): Response
+    {
+        //get an array with all the posts
+        $posts = $microPostRepository->findAllWithComments();
+        //render the template
+        return $this->render('micro_post/follows.html.twig', [
+            'posts' => $posts
+        ]);
+    }
+
         /**
      * this funcion is useful to show a single post
      */

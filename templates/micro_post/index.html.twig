@@ -3,6 +3,7 @@
 {% block title %}All Posts!{% endblock %}
 
 {% block body %}
+    {{include ('micro_post/_post_tabs.html.twig')}}
     {{include ('micro_post/_post_list.html.twig')}}
     <script>
         /*this function is useful to delete a post calling app_micro_post_delete route of MicroPostController*/
