@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class MicroPostController extends AbstractController
 {
@@ -59,9 +60,9 @@ class MicroPostController extends AbstractController
         ]);
     }
 
-        /**
-     * this funcion is useful to show a single post
-     */
+    /**
+    * this funcion is useful to show a single post
+    */
     #[Route('/micro-post/{id}', name: 'app_micro_post_show')]
     #[IsGranted(MicroPost::VIEW, 'post')]
     public function showOne(MicroPost $post): Response
@@ -86,7 +87,8 @@ class MicroPostController extends AbstractController
         //create a form with title and text
         $form = $this->createFormBuilder($micropost)
             ->add ('title')
-            ->add ('text')
+            ->add ('text', TextareaType::class)
+            ->add ('extraPrivacy')
             ->getForm();
         $form->handleRequest($request);
 
