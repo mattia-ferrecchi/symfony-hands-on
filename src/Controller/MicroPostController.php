@@ -19,10 +19,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class MicroPostController extends AbstractController
 {
-        /**
-     * this funcion is useful to show the post list
-     */
-
+    /**
+    * this funcion is useful to show the post list
+    */
     #[Route('/micro-post', name: 'app_micro_post')]
     public function index(MicroPostRepository $microPostRepository): Response
     {
@@ -34,6 +33,9 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+    /**
+    * this funcion is useful to show top liked posts
+    */
     #[Route('/micro-post/top-liked', name: 'app_micro_post_top_liked')]
     public function topLiked(MicroPostRepository $microPostRepository): Response
     {
@@ -43,6 +45,9 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+    /**
+    * this funcion is useful to show posts written by authors that user follows
+    */
     #[Route('/micro-post/follows', name: 'app_micro_post_follows')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function follows(MicroPostRepository $microPostRepository): Response
@@ -84,7 +89,7 @@ class MicroPostController extends AbstractController
     {
         //create new micropost
         $micropost = new MicroPost();
-        //create a form with title and text
+        //create a form with title, text and extra privacy option
         $form = $this->createFormBuilder($micropost)
             ->add ('title')
             ->add ('text', TextareaType::class)
@@ -109,6 +114,7 @@ class MicroPostController extends AbstractController
             'form'=>$form
         ]);
     }
+
     /**
      * this funcion is useful to edit a post
      */
